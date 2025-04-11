@@ -34,6 +34,84 @@ const routes = [
         ],
     },
 
+    {
+        path: "/",
+        component: () => import("../layout/wrapper/index_login.vue"),
+        children: [
+            {
+                path: "login",
+                component: () => import("../components/Login/index.vue"),
+            },
+            {
+                path: "dat-lai-mat-khau/:maBiMat",
+                component: () => import("../components/DatLaiMatKhau/index.vue"),
+            },
+
+            {
+                path: "quen-mat-khau",
+                component: () => import("../components/QuenMatKhau/index.vue"),
+            },
+            {
+                path: "/auth",
+                component: () => import("../components/Auth/index.vue"),
+            },
+        ],
+    },
+
+    {
+        path: "/admin",
+        component: () => import("../layout/wrapper/index.vue"),
+        beforeEnter: checkLogin,
+        children: [
+            {
+                path: "",
+                component: () => import("../components/Dashboard/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "danh-muc",
+                component: () => import("../components/DanhMuc/index.vue"),
+                beforeEnter: checkLogin,
+            },
+
+            {
+                path: "su-dung-dich-vu",
+                component: () => import("../components/SuDungDichVu/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "hoa-don-ban-hang",
+                component: () => import("../components/HoaDonBanHang/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "nguyen-lieu",
+                component: () => import("../components/NguyenLieu/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "nhap-kho",
+                component: () => import("../components/NhapKho/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "hoa-don-nhap-kho",
+                component: () => import("../components/HoaDonNhapKho/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "mon-an",
+                component: () => import("../components/MonAn/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "nha-cung-cap",
+                component: () => import("../components/NhaCungCap/index.vue"),
+                beforeEnter: checkLogin,
+            },
+        ],
+    },
+
     // Quên mật Khẩu
 ];
 
