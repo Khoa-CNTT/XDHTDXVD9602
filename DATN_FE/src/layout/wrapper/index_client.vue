@@ -11,7 +11,7 @@
         <div class="position-relative p-0">
             <MenuClient></MenuClient>
         </div>
-        
+
         <router-view></router-view>
         <BotClient></BotClient>
         <!-- Footer End -->
@@ -20,14 +20,16 @@
     </div>
 </template>
 <script>
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/64aba9da94cf5d49dc6292a9/1h4v8v0oq';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
+var Tawk_API = Tawk_API || {},
+    Tawk_LoadStart = new Date();
+(function () {
+    var s1 = document.createElement("script"),
+        s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = "https://embed.tawk.to/6805fea36d34aa190b0562db/1ipbmlcja";
+    s1.charset = "UTF-8";
+    s1.setAttribute("crossorigin", "*");
+    s0.parentNode.insertBefore(s1, s0);
 })();
 import MenuClient from "../components/MenuClient.vue";
 import BotClient from "../components/BotClient.vue";
@@ -42,11 +44,12 @@ import "../../assets/assets_client/lib/owlcarousel/owl.carousel.min.js";
 // import "../../assets/assets_client/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js";
 import "../../assets/assets_client/js/main.js";
 export default {
-    name        : 'app',
-    components  : {
-        MenuClient, BotClient
-    }
-}
+    name: "app",
+    components: {
+        MenuClient,
+        BotClient,
+    },
+};
 </script>
 <style>
 @import "../../assets/assets_client/lib/animate/animate.min.css";
@@ -54,10 +57,10 @@ export default {
 @import "../../assets/assets_client/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css";
 @import "../../assets/assets_client/css/bootstrap.min.css";
 @import "../../assets/assets_client/css/style.css";
-@import url('https://fonts.googleapis.com');
-@import url('https://fonts.gstatic.com');
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css');
-@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css');
+@import url("https://fonts.googleapis.com");
+@import url("https://fonts.gstatic.com");
+@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
 </style>
