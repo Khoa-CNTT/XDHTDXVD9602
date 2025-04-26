@@ -91,7 +91,16 @@ const routes = [
                 component: () => import("../components/Bep/index.vue"),
                 beforeEnter: checkLogin,
             },
-
+            {
+                path: "chuc-vu",
+                component: () => import("../components/ChucVu/index.vue"),
+                beforeEnter: checkLogin,
+            },
+            {
+                path: "nhan-vien",
+                component: () => import("../components/NhanVien/index.vue"),
+                beforeEnter: checkLogin,
+            },
             {
                 path: "nguyen-lieu",
                 component: () => import("../components/NguyenLieu/index.vue"),
@@ -116,6 +125,10 @@ const routes = [
                 path: "nha-cung-cap",
                 component: () => import("../components/NhaCungCap/index.vue"),
                 beforeEnter: checkLogin,
+            },
+            {
+                path: "phan-quyen",
+                component: () => import("../components/PhanQuyen/index.vue"),
             },
         ],
     },
