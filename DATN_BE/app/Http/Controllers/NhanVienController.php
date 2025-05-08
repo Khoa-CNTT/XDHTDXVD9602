@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
-
+use Illuminate\Support\Facades\Validator;
 
 class NhanVienController extends Controller
 {
@@ -196,38 +196,45 @@ class NhanVienController extends Controller
     }
 
     public function createNhanVien(CreateNhanVienRequest $request)
-    {
-        $id_chuc_nang = 18;
-        $user = Auth::guard('sanctum')->user();
+{
+    $id_chuc_nang = 18;
+    $user = Auth::guard('sanctum')->user();
 
-        if ($user instanceof \App\Models\NhanVien) {
-            $user_chuc_vu   = $user->id_chuc_vu;
-            $check  = PhanQuyen::where('id_chuc_vu', $user_chuc_vu)
-                                ->where('id_chuc_nang', $id_chuc_nang)
-                                ->first();
-            if(!$check) {
-                return response()->json([
-                    'status'  =>  false,
-                    'message' =>  'Bạn không có quyền chức năng này'
-                ]);
-            }
+    if ($user instanceof \App\Models\NhanVien) {
+        $user_chuc_vu   = $user->id_chuc_vu;
+        $check  = PhanQuyen::where('id_chuc_vu', $user_chuc_vu)
+                            ->where('id_chuc_nang', $id_chuc_nang)
+                            ->first();
+        if(!$check) {
+            return response()->json([
+                'status'  =>  false,
+                'message' =>  'Bạn không có quyền chức năng này'
+            ]);
         }
-
-        NhanVien::create([
-            'ho_va_ten'         => $request->ho_va_ten,
-            'email'             => $request->email,
-            'password'          => $request->password,
-            'so_dien_thoai'     => $request->so_dien_thoai,
-            'dia_chi'           => $request->dia_chi,
-            'id_chuc_vu'        => $request->id_chuc_vu,
-            'tinh_trang'        => $request->tinh_trang,
-        ]);
-
-        return response()->json([
-            'status'            =>   true,
-            'message'           =>   'Đã tạo mới nhân viên thành công!',
-        ]);
     }
+
+    if (!$request->filled('password')) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Password không được để trống!',
+        ], 400);
+    }
+
+    NhanVien::create([
+        'ho_va_ten'         => $request->ho_va_ten,
+        'email'             => $request->email,
+        'password'          => bcrypt($request->password),
+        'so_dien_thoai'     => $request->so_dien_thoai,
+        'dia_chi'           => $request->dia_chi,
+        'id_chuc_vu'        => $request->id_chuc_vu,
+        'tinh_trang'        => $request->tinh_trang,
+    ]);
+
+    return response()->json([
+        'status'            =>   true,
+        'message'           =>   'Đã tạo mới nhân viên thành công!',
+    ]);
+}
     public function xoaNhanVien($id)
     {
         $id_chuc_nang = 19;
@@ -260,7 +267,7 @@ class NhanVienController extends Controller
                     'message'           =>   'Xóa nhân viên thành công!',
                 ]);
             }
-            
+
         } catch (Exception $e) {
             Log::info("Lỗi", $e);
             return response()->json([
@@ -292,7 +299,7 @@ class NhanVienController extends Controller
                 ->update([
                     'ho_va_ten'         => $request->ho_va_ten,
                     'email'             => $request->email,
-                    'password'          => $request->password,
+                    'password'          => bcrypt($request->password),
                     'so_dien_thoai'     => $request->so_dien_thoai,
                     'dia_chi'           => $request->dia_chi,
                     'id_chuc_vu'        => $request->id_chuc_vu,
@@ -369,6 +376,22 @@ class NhanVienController extends Controller
 
     public function doiMatKhau(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|confirmed|min:6',
+            'hash_quen_mat_khau' => 'required',
+        ], [
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.confirmed' => 'Mật khẩu nhập lại không khớp.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
         $nhanVien  = NhanVien::where('hash_quen_mat_khau', $request->hash_quen_mat_khau)->first();
         if($nhanVien) {

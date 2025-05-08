@@ -1,25 +1,32 @@
 <template>
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="card border-primary border-bottom border-3 border-0">
-                <div class="card-header">Thêm Mới Chức Năng</div>
+                <div class="card-header">Thêm Mới Bài Viết</div>
                 <div class="card-body">
-                    <label class="mb-1 mt-1">Tên Chức Vụ</label>
-                    <input v-model="create_chuc_vu.ten_chuc_vu" class="form-control" type="text" />
+                    <label class="mb-1 mt-1">Tiêu Đề</label>
+                    <input v-model="create_bai_viet.tieu_de" class="form-control" type="text" />
+                    <label class="mb-1 mt-1">Hình Ảnh</label>
+                    <input type="file" v-on:change="handleFile($event, true)" class="form-control mb-3" placeholder="" />
+                    <div v-if="banner">
+                        <img :src="banner" class="img-fluid" alt="Chưa có hình ảnh" />
+                    </div>
+                    <label class="mb-1 mt-1">Nội Dung</label>
+                    <textarea v-model="create_bai_viet.noi_dung" class="form-control" cols="30" rows="10"></textarea>
                     <label class="mb-1 mt-1">Tình Trạng</label>
-                    <select v-model="create_chuc_vu.tinh_trang" class="form-select">
+                    <select v-model="create_bai_viet.tinh_trang" class="form-select">
                         <option value="1">Hoạt Động</option>
                         <option value="0">Tạm Dừng</option>
                     </select>
                 </div>
-                <div @:click="createChucVu()" class="card-footer text-end">
+                <div @:click="createBaiViet()" class="card-footer text-end">
                     <button class="btn btn-primary">Thêm Mới</button>
                 </div>
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="card border-primary border-bottom border-3 border-0">
-                <div class="card-header">Danh Sách Chức Vụ</div>
+                <div class="card-header">Danh Sách Bài Viết</div>
                 <div class="card-body" style="max-height: 500px; overflow-y: auto">
                     <div class="table-responsive">
                         <table class="table table-bordered">
@@ -27,8 +34,8 @@
                                 <tr>
                                     <th colspan="100%">
                                         <div class="input-group mb-3">
-                                            <input v-on:keyup.enter="searchChucVu()" v-model="key_search.abc" type="text" class="form-control" placeholder="Nhập thông tin cần tìm" />
-                                            <button class="btn btn-primary" v-on:click="searchChucVu()">
+                                            <input v-on:keyup.enter="searchBaiViet()" v-model="key_search.abc" type="text" class="form-control" placeholder="Nhập thông tin cần tìm" />
+                                            <button class="btn btn-primary" v-on:click="searchBaiViet()">
                                                 <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
                                         </div>
@@ -36,24 +43,34 @@
                                 </tr>
                                 <tr class="text-nowrap">
                                     <th class="align-middle text-center">#</th>
-                                    <th class="align-middle text-center">Tên Chức Vụ</th>
+                                    <th class="align-middle text-center">Tiêu Đề</th>
+                                    <th class="align-middle text-center">Hình Ảnh</th>
+                                    <th class="align-middle text-center">Nội Dung</th>
+                                    <th class="align-middle text-center">Nhân Viên</th>
                                     <th class="align-middle text-center">Tình Trạng</th>
                                     <th class="align-middle text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(v, k) in chuc_vus.data" :key="k" class="text-nowrap">
+                                <tr v-for="(v, k) in bai_viets.data" :key="k">
                                     <th class="align-middle text-center">{{ v.id }}</th>
-                                    <td class="align-middle">{{ v.ten_chuc_vu }}</td>
+                                    <td class="align-middle text-wrap">{{ v.tieu_de }}</td>
+                                    <td class="align-middle">
+                                        <img v-bind:src="v.hinh_anh" class="img-fluid" alt="" />
+                                    </td>
                                     <td class="align-middle text-center">
+                                        <i @:click="nd = v.noi_dung" data-bs-toggle="modal" data-bs-target="#noiDungModal" class="fa-solid fa-file-lines fa-xl text-warning"></i>
+                                    </td>
+                                    <td class="align-middle">{{ v.ho_va_ten }}</td>
+                                    <td class="align-middle text-center text-nowrap">
                                         <button @:click="doiTrangThai(v)" v-if="v.tinh_trang == 1" class="btn btn-success">Hoạt động</button>
                                         <button @:click="doiTrangThai(v)" v-else class="btn btn-warning">Tạm Dừng</button>
                                     </td>
-                                    <td class="align-middle text-center">
-                                        <button v-on:click="Object.assign(edit_chuc_vu, v)" style="margin-right: 4px" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#capNhatModal">
+                                    <td class="align-middle text-center text-nowrap">
+                                        <button v-on:click="Object.assign(edit_bai_viet, v)" style="margin-right: 4px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#capNhatModal">
                                             Cập Nhật
                                         </button>
-                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#xoaModal" v-on:click="Object.assign(delete_chuc_vu, v)">Xóa</button>
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#xoaModal" v-on:click="Object.assign(delete_bai_viet, v)">Xóa</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -63,21 +80,31 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Chức Vụ</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Bài Viết</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <label class="mb-1 mt-1">Tên Chức Vụ</label>
-                                    <input v-model="edit_chuc_vu.ten_chuc_vu" class="form-control" type="text" />
+                                    <input v-model="edit_bai_viet.tieu_de" class="form-control" type="text" />
+                                    <label class="mb-1 mt-1">Hình Ảnh</label>
+                                    <input type="file" v-on:change="handleFile($event, false)" class="form-control mb-3" placeholder="" />
+                                    <div v-if="edit_bai_viet.hinh_anh && !banner">
+                                        <img :src="edit_bai_viet.hinh_anh" class="img-fluid" alt="Chưa có hình ảnh" />
+                                    </div>
+                                    <div v-if="banner">
+                                        <img :src="banner" class="img-fluid" alt="Chưa có hình ảnh" />
+                                    </div>
+                                    <label class="mb-1 mt-1">Nội Dung</label>
+                                    <textarea v-model="edit_bai_viet.noi_dung" class="form-control" cols="30" rows="10"></textarea>
                                     <label class="mb-1 mt-1">Tình Trạng</label>
-                                    <select v-model="edit_chuc_vu.tinh_trang" class="form-select">
+                                    <select v-model="edit_bai_viet.tinh_trang" class="form-select">
                                         <option value="1">Hoạt Động</option>
-                                        <option value="0">Tạm Dừng</option>
+                                        <option value="0">Tạm Tắt</option>
                                     </select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                                    <button v-on:click="updateChucVu()" type="button" data-bs-dismiss="modal" class="btn btn-danger">Cập Nhật</button>
+                                    <button v-on:click="updateBaiViet()" type="button" data-bs-dismiss="modal" class="btn btn-primary">Cập Nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +113,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Chức Vụ</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Bài Viết</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -97,8 +124,7 @@
                                                 <h6 class="mb-0 text-dark">Cảnh báo</h6>
                                                 <div class="text-dark">
                                                     <p>
-                                                        Bạn có muốn xóa danh mục <b>{{ delete_chuc_vu.ten_chuc_vu }}</b>
-                                                        này không?
+                                                        Bạn có muốn xóa danh mục <b>{{ delete_bai_viet.tieu_de }}</b> này không?
                                                     </p>
                                                     <p><b>Lưu ý:</b> Điều này không thể hoàn tác!</p>
                                                 </div>
@@ -108,7 +134,23 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                                    <button type="button" class="btn btn-danger" v-on:click="deleteChucVu()" data-bs-dismiss="modal">Xóa</button>
+                                    <button type="button" class="btn btn-danger" v-on:click="deleteBaiViet()" data-bs-dismiss="modal">Xóa</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="noiDungModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nội Dung Bài Viết</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ nd }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
                                 </div>
                             </div>
                         </div>
@@ -133,25 +175,27 @@ const toaster = createToaster({ position: "top-right" });
 export default {
     data() {
         return {
-            chuc_vus: {
+            banner: "",
+            nd: "",
+            bai_viets: {
                 data: [],
                 current_page: 1,
                 last_page: 1,
             },
             pageSize: 5,
             key_search: {},
-            create_chuc_vu: {},
-            delete_chuc_vu: {},
-            edit_chuc_vu: {},
+            create_bai_viet: {},
+            delete_bai_viet: {},
+            edit_bai_viet: {},
             isSearching: false,
         };
     },
     computed: {
         currentPage() {
-            return this.chuc_vus.current_page;
+            return this.bai_viets.current_page;
         },
         totalPages() {
-            return this.chuc_vus.last_page;
+            return this.bai_viets.last_page;
         },
         pageNumbers() {
             let pages = [];
@@ -204,38 +248,68 @@ export default {
         },
     },
     mounted() {
-        this.loadDataChucVu(1);
+        this.loadDataBaiViet(1);
     },
     methods: {
-        loadDataChucVu(page) {
-            baseRequest.get(`admin/chuc-vu/lay-du-lieu?page=${page}&pageSize=${this.pageSize}`).then((res) => {
-                this.chuc_vus = res.data.chuc_vu;
+        handleFile(e, isCreate) {
+            let files = e.target.files || e.dataTransfer.files;
+            this.file = files;
+            if (!files.length) return;
+            this.createImage(files[0], isCreate);
+        },
+
+        createImage(file, isCreate) {
+            let reader = new FileReader();
+            let vm = this;
+            reader.onload = (e) => {
+                vm.banner = e.target.result;
+                if (isCreate == true) {
+                    vm.create_bai_viet.hinh_anh = file;
+                } else {
+                    vm.edit_bai_viet.hinh_anh = file;
+                }
+            };
+            reader.readAsDataURL(file);
+        },
+
+        loadDataBaiViet(page) {
+            baseRequest.get(`admin/bai-viet/lay-du-lieu?page=${page}&pageSize=${this.pageSize}`).then((res) => {
+                this.bai_viets = res.data.bai_viet;
             });
         },
 
-        searchChucVu(page = 1) {
-            baseRequest.post(`admin/chuc-vu/tim-chuc-vu?page=${page}`, this.key_search).then((res) => {
-                this.chuc_vus = res.data.chuc_vu;
-                this.chuc_vus.current_page = page;
+        searchBaiViet(page = 1) {
+            baseRequest.post(`admin/bai-viet/tim-bai-viet?page=${page}`, this.key_search).then((res) => {
+                this.bai_viets = res.data.bai_viet;
+                this.bai_viets.current_page = page;
                 this.isSearching = true;
             });
         },
         handlePageChange(page) {
             if (this.isSearching) {
-                this.searchChucVu(page);
+                this.searchBaiViet(page);
             } else {
-                this.loadDataChucVu(page);
+                this.loadDataBaiViet(page);
             }
         },
-        createChucVu() {
-            console.log(this.create_chuc_vu);
+
+        createBaiViet() {
+            const formData = new FormData();
+            for (let key in this.create_bai_viet) {
+                formData.append(key, this.create_bai_viet[key]);
+            }
             baseRequest
-                .post("admin/chuc-vu/tao-chuc-vu", this.create_chuc_vu)
+                .post("admin/bai-viet/tao-bai-viet", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     if (res.data.status == true) {
                         toaster.success("Thông báo<br>" + res.data.message);
-                        this.create_chuc_vu = {};
-                        this.loadDataChucVu(this.chuc_vus.last_page);
+                        this.create_bai_viet = {};
+                        this.banner = "";
+                        this.loadDataBaiViet(this.bai_viets.last_page);
                     }
                 })
                 .catch((errors) => {
@@ -245,23 +319,31 @@ export default {
                     });
                 });
         },
-        deleteChucVu() {
-            baseRequest.delete("admin/chuc-vu/xoa-chuc-vu/" + this.delete_chuc_vu.id).then((res) => {
+        deleteBaiViet() {
+            baseRequest.delete("admin/bai-viet/xoa-bai-viet/" + this.delete_bai_viet.id).then((res) => {
                 if (res.data.status == true) {
                     toaster.success("Thông báo<br>" + res.data.message);
-                    this.handlePageChange(this.chuc_vus.current_page);
+                    this.handlePageChange(this.bai_viets.current_page);
                 } else {
                     toaster.error("Thông báo<br>" + res.data.message);
                 }
             });
         },
-        updateChucVu() {
+        updateBaiViet() {
+            const formData = new FormData();
+            for (let key in this.edit_bai_viet) {
+                formData.append(key, this.edit_bai_viet[key]);
+            }
             baseRequest
-                .put("admin/chuc-vu/cap-nhat-chuc-vu", this.edit_chuc_vu)
+                .post("admin/bai-viet/cap-nhat-bai-viet", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     if (res.data.status == true) {
                         toaster.success("Thông báo<br>" + res.data.message);
-                        this.handlePageChange(this.chuc_vus.current_page);
+                        this.handlePageChange(this.bai_viets.current_page);
                     } else {
                         toaster.error("Thông báo<br>" + res.data.message);
                     }
@@ -274,10 +356,10 @@ export default {
                 });
         },
         doiTrangThai(xyz) {
-            baseRequest.put("admin/chuc-vu/doi-trang-thai", xyz).then((res) => {
+            baseRequest.put("admin/bai-viet/doi-trang-thai", xyz).then((res) => {
                 if (res.data.status == true) {
                     toaster.success("Thông báo<br>" + res.data.message);
-                    this.handlePageChange(this.chuc_vus.current_page);
+                    this.handlePageChange(this.bai_viets.current_page);
                 } else {
                     toaster.error(res.data.message);
                 }

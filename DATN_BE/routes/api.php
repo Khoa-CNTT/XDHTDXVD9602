@@ -57,15 +57,67 @@ Route::group(['prefix'  =>  '/admin', "middleware" => "nhanVien"], function () {
         Route::put('/cap-nhat-danh-muc', [DanhMucController::class, 'capNhatDanhMuc']);
         Route::put('/doi-trang-thai', [DanhMucController::class, 'doiTrangThaiDanhMuc']);
         Route::post('/kiem-tra-slug', [DanhMucController::class, 'kiemTraSlugDanhMuc']);
+        Route::post('/kiem-tra-slug-update', [DanhMucController::class, 'kiemTraSlugDanhMucUpdate']);
+    });
+
+    Route::group(['prefix'  =>  '/bai-viet'], function () {
+        Route::get('/lay-du-lieu', [BaiVietController::class, 'getData']);
+        Route::get('/lay-du-lieu-all', [BaiVietController::class, 'getDataAll']);
+        Route::post('/tim-bai-viet', [BaiVietController::class, 'searchBaiViet']);
+        Route::post('/tao-bai-viet', [BaiVietController::class, 'createBaiViet']);
+        Route::delete('/xoa-bai-viet/{id}', [BaiVietController::class, 'xoaBaiViet']);
+        Route::post('/cap-nhat-bai-viet', [BaiVietController::class, 'capNhatBaiViet']);
+        Route::put('/doi-trang-thai', [BaiVietController::class, 'doiTrangThaiBaiViet']);
     });
 
 
+    Route::group(['prefix'  =>  '/nhan-vien'], function () {
+        Route::get('/lay-du-lieu', [NhanVienController::class, 'getData']);
+        Route::post('/tim-nhan-vien', [NhanVienController::class, 'searchNhanVien']);
+        Route::post('/tao-nhan-vien', [NhanVienController::class, 'createNhanVien']);
+        Route::delete('/xoa-nhan-vien/{id}', [NhanVienController::class, 'xoaNhanVien']);
+        Route::put('/cap-nhat-nhan-vien', [NhanVienController::class, 'capNhatNhanVien']);
+        Route::put('/doi-trang-thai', [NhanVienController::class, 'doiTrangThaiNhanVien']);
+    });
 
 
+    Route::group(['prefix'  =>  '/chuc-vu'], function () {
+        Route::get('/lay-du-lieu', [ChucVuController::class, 'getData']);
+        Route::get('/lay-du-lieu-all', [ChucVuController::class, 'getDataAll']);
+        Route::post('/tim-chuc-vu', [ChucVuController::class, 'searchChucVu']);
+        Route::post('/tao-chuc-vu', [ChucVuController::class, 'createChucVu']);
+        Route::delete('/xoa-chuc-vu/{id}', [ChucVuController::class, 'xoaChucVu']);
+        Route::put('/cap-nhat-chuc-vu', [ChucVuController::class, 'capNhatChucVu']);
+        Route::put('/doi-trang-thai', [ChucVuController::class, 'doiTrangThaiChucVu']);
+    });
 
 
+    Route::group(['prefix'  =>  '/ban'], function () {
+        Route::get('/lay-du-lieu', [BanController::class, 'getData']);
+        Route::get('/lay-du-lieu-all', [BanController::class, 'getDataAll']);
+        Route::post('/tim-ban', [BanController::class, 'searchBan']);
+        Route::post('/tao-ban', [BanController::class, 'createBan']);
+        Route::delete('/xoa-ban/{id}', [BanController::class, 'xoaBan']);
+        Route::put('/cap-nhat-ban', [BanController::class, 'capNhatBan']);
+        Route::put('/doi-trang-thai', [BanController::class, 'doiTrangThaiBan']);
+        Route::post('/kiem-tra-slug', [BanController::class, 'kiemTraSlugBan']);
+        Route::post('/kiem-tra-slug-update', [BanController::class, 'kiemTraSlugBanUpdate']);
+    });
 
 
+    Route::group(['prefix'  =>  '/khu-vuc'], function () {
+        Route::get('/lay-du-lieu', [KhuVucController::class, 'getData']);
+        Route::get('/lay-du-lieu-all', [KhuVucController::class, 'getDataAll']);
+        Route::get('/lay-du-lieu-hoat-dong', [KhuVucController::class, 'getDataHoatDong']);
+        Route::post('/tim-khu-vuc', [KhuVucController::class, 'searchKhuVuc']);
+        Route::post('/tao-khu-vuc', [KhuVucController::class, 'createKhuVuc']);
+        Route::delete('/xoa-khu-vuc/{id}', [KhuVucController::class, 'xoaKhuVuc']);
+        Route::put('/cap-nhat-khu-vuc', [KhuVucController::class, 'capNhatKhuVuc']);
+        Route::put('/doi-trang-thai', [KhuVucController::class, 'doiTrangThaiKhuVuc']);
+
+        Route::post('/kiem-tra-slug', [KhuVucController::class, 'kiemTraSlugKhuVuc']);
+        Route::post('/kiem-tra-slug-update', [KhuVucController::class, 'kiemTraSlugKhuVucUpdate']);
+    });
 
 
     Route::group(['prefix'  =>  '/nguyen-lieu'], function () {
@@ -134,6 +186,18 @@ Route::group(['prefix'  =>  '/admin', "middleware" => "nhanVien"], function () {
         Route::post('/data-bill', [HoaDonBanHangController::class, 'dataBill']);
     });
 
+    Route::group(['prefix'  =>  '/phan-quyen'], function () {
+        Route::get('/lay-du-lieu', [ChucVuController::class, 'getDataPhanQuyen']);
+        Route::post('/create', [PhanQuyenController::class, 'createPhanQuyen']);
+        Route::post('/get-chuc-nang', [PhanQuyenController::class, 'getChucNang']);
+        Route::delete('/xoa-phan-quyen/{id}', [PhanQuyenController::class, 'xoaPhanQuyen']);
+    });
 
+    Route::group(['prefix'  =>  '/thong-ke'], function () {
+        Route::post('/data-thong-ke-1', [ThongKeController::class, 'getDataThongke1']);
+        Route::post('/data-thong-ke-2', [ThongKeController::class, 'getDataThongke2']);
+        Route::post('/data-thong-ke-3', [ThongKeController::class, 'getDataThongke3']);
+        Route::post('/data-thong-ke-4', [ThongKeController::class, 'getDataThongke4']);
+    });
 
 });

@@ -1,28 +1,24 @@
 <template>
     <div class="row">
         <div class="card">
-            <div class="card-header">
-                Danh Sách Hóa Đơn Nhập Kho
-            </div>
-            <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+            <div class="card-header">Danh Sách Hóa Đơn Nhập Kho</div>
+            <div class="card-body" style="max-height: 500px; overflow-y: auto">
                 <div class="table-responesive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <td class="align-middle">Từ Ngày</td>
                                 <td class="align-middle">
-                                    <input v-on:change="getDataHoaDonNhapKho()" type="date" class="form-control" v-model="tk.begin">
+                                    <input v-on:change="getDataHoaDonNhapKho()" type="date" class="form-control" v-model="tk.begin" />
                                 </td>
                                 <td class="align-middle">Đến Ngày</td>
                                 <td class="align-middle">
-                                    <input v-on:change="getDataHoaDonNhapKho()" type="date" class="form-control" v-model="tk.end">
+                                    <input v-on:change="getDataHoaDonNhapKho()" type="date" class="form-control" v-model="tk.end" />
                                 </td>
                                 <td class="align-middle text-center">
                                     <button class="btn btn-primary" v-on:click="getDataHoaDonNhapKho()">Thống Kê</button>
                                 </td>
-                                <td class="align-middle" colspan="3">
-                                    Tổng Tiền: {{ formatToVND(tong_tien) }}
-                                </td>
+                                <td class="align-middle" colspan="3">Tổng Tiền: {{ formatToVND(tong_tien) }}</td>
                             </tr>
                             <tr class="text-center align-middle">
                                 <th>Mã Hóa Đơn</th>
@@ -38,16 +34,14 @@
                                 <tr>
                                     <td class="text-center align-middle">{{ value.ma_hoa_don }}</td>
                                     <td class="text-end align-middle">{{ formatToVND(value.tong_tien) }}</td>
-                                    <td class="align-middle">{{ value.ten_cong_ty}}</td>
+                                    <td class="align-middle">{{ value.ten_cong_ty }}</td>
                                     <td class="text-center align-middle">
-                                        <i class="fa-solid fa-notes-medical fa-2x text-info" v-on:click="Object.assign(detail_hoa_don, value)" data-bs-toggle="modal"
-                                        data-bs-target="#ghiChuModal"></i>
+                                        <i class="fa-solid fa-notes-medical fa-2x text-info" v-on:click="Object.assign(detail_hoa_don, value)" data-bs-toggle="modal" data-bs-target="#ghiChuModal"></i>
                                     </td>
                                     <td class="text-center align-middle">
-                                        <i class="fa-solid fa-circle-info fa-2x text-success" v-on:click="getDataChiTietHoaDonNhapKho(value)" data-bs-toggle="modal"
-                                        data-bs-target="#chiTietModal"></i>
+                                        <i class="fa-solid fa-circle-info fa-2x text-success" v-on:click="getDataChiTietHoaDonNhapKho(value)" data-bs-toggle="modal" data-bs-target="#chiTietModal"></i>
                                     </td>
-                                    <td class="align-middle">{{ value.ho_va_ten}}</td>
+                                    <td class="align-middle">{{ value.ho_va_ten }}</td>
                                 </tr>
                             </template>
                         </tbody>
@@ -99,7 +93,6 @@
                                                     <td class="text-end align-middle">{{ formatToVND(value.thanh_tien) }}</td>
                                                 </tr>
                                             </template>
-                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -112,14 +105,11 @@
                 </div>
             </div>
             <div class="card-footer text-end text-nowrap">
-                <button @click="getDataHoaDonNhapKho(currentPage - 1)" :disabled="currentPage <= 1"
-                    class="btn btn-secondary btn-sm me-2">Previous</button>
-                <button class="btn btn-secondary btn-sm me-2" v-for="page in pageNumbers" :key="page"
-                    @click="page !== '...' && getDataHoaDonNhapKho(page)" :class="{ active: page === currentPage }">
+                <button @click="getDataHoaDonNhapKho(currentPage - 1)" :disabled="currentPage <= 1" class="btn btn-secondary btn-sm me-2">Previous</button>
+                <button class="btn btn-secondary btn-sm me-2" v-for="page in pageNumbers" :key="page" @click="page !== '...' && getDataHoaDonNhapKho(page)" :class="{ active: page === currentPage }">
                     {{ page }}
                 </button>
-                <button @click="getDataHoaDonNhapKho(currentPage + 1)" :disabled="currentPage >= totalPages"
-                    class="btn btn-secondary btn-sm me-2">Next</button>
+                <button @click="getDataHoaDonNhapKho(currentPage + 1)" :disabled="currentPage >= totalPages" class="btn btn-secondary btn-sm me-2">Next</button>
             </div>
         </div>
     </div>
@@ -127,22 +117,22 @@
 <script>
 import { createToaster } from "@meforma/vue-toaster";
 const toaster = createToaster({ position: "top-right" });
-import baseRequest from '../../core/baseRequest';
+import baseRequest from "../../core/baseRequest";
 export default {
     data() {
         return {
             hoa_don_nhap_khos: {
                 data: [],
                 current_page: 1,
-                last_page: 1
+                last_page: 1,
             },
             pageSize: 5,
-            list_chi_tiet_hoa_don       : [],
-            detail_hoa_don              : {},
-            tk                          :   {begin: '', end : ''},
-            tong_tien                   : 0,
-            isSearching: false
-        }
+            list_chi_tiet_hoa_don: [],
+            detail_hoa_don: {},
+            tk: { begin: "", end: "" },
+            tong_tien: 0,
+            isSearching: false,
+        };
     },
     computed: {
         currentPage() {
@@ -174,14 +164,14 @@ export default {
                         pages.push(i);
                     }
                     if (this.totalPages > 4) {
-                        pages.push('...');
+                        pages.push("...");
                         pages.push(this.totalPages);
                     }
                 } else if (this.currentPage >= this.totalPages - 2) {
                     // Người dùng đang ở ba trang cuối
                     pages.push(1);
                     if (this.totalPages > 4) {
-                        pages.push('...');
+                        pages.push("...");
                     }
                     let minPage = Math.max(this.totalPages - 3, 1); // Đảm bảo không nhỏ hơn trang đầu tiên
                     for (let i = minPage; i <= this.totalPages; i++) {
@@ -190,55 +180,72 @@ export default {
                 } else {
                     // Người dùng đang ở các trang giữa
                     pages.push(1);
-                    pages.push('...');
+                    pages.push("...");
                     for (let i = this.currentPage - 1; i <= this.currentPage + 1; i++) {
                         pages.push(i);
                     }
-                    pages.push('...');
+                    pages.push("...");
                     pages.push(this.totalPages);
                 }
             }
             return pages;
-        }
+        },
     },
     mounted() {
-        var date        = new Date();
-        var subday      = new Date(date.setDate(date.getDate() - 0));
-        this.tk.begin   = subday.toISOString().slice(0, 10);
-        this.tk.end     = new Date().toISOString().slice(0, 10);
+        var date = new Date();
+        var subday = new Date(date.setDate(date.getDate() - 0));
+        this.tk.begin = subday.toISOString().slice(0, 10);
+        this.tk.end = new Date().toISOString().slice(0, 10);
         this.getDataHoaDonNhapKho(1);
     },
     methods: {
         formatToVND(number) {
             number = parseInt(number);
-            return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            return number.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
         },
-        
+
         getDataHoaDonNhapKho(page) {
             baseRequest
                 .post(`admin/nhap-kho/data-hoa-don-nhap-kho?page=${page}&pageSize=${this.pageSize}`, this.tk)
                 .then((res) => {
-                    this.hoa_don_nhap_khos  = res.data.data;
-                    this.tong_tien          = res.data.tong_tien;
+                    this.hoa_don_nhap_khos = res.data.data;
+                    this.tong_tien = res.data.tong_tien;
                 })
                 .catch((errors) => {
                     const listErrors = errors.response.data.errors;
                     Object.values(listErrors).forEach((value, index) => {
-                        toaster.error('Thông báo<br>' + value);
-                    })
+                        toaster.error("Thông báo<br>" + value);
+                    });
                 });
         },
 
         getDataChiTietHoaDonNhapKho(v) {
-            baseRequest
-                .post('admin/nhap-kho/data-chi-tiet-hoa-don-nhap-kho', v)
-                .then((res) => {
-                    this.list_chi_tiet_hoa_don = res.data.data;
-                })
-        }
+            baseRequest.post("admin/nhap-kho/data-chi-tiet-hoa-don-nhap-kho", v).then((res) => {
+                this.list_chi_tiet_hoa_don = res.data.data;
+            });
+        },
     },
-}
+    computedDay: {
+        maxEndDate() {
+            const today = new Date();
+            const todayStr = today.toISOString().slice(0, 10);
+
+            // Nếu chưa chọn "Từ ngày" thì "Đến ngày" tối đa là ngày hiện tại
+            if (!this.tk.begin) {
+                return todayStr;
+            }
+
+            const beginDate = new Date(this.tk.begin);
+
+            // Nếu "Từ ngày" là ngày tương lai, "Đến ngày" tối đa là "Từ ngày"
+            if (beginDate > today) {
+                return this.tk.begin;
+            }
+
+            // Nếu "Từ ngày" là quá khứ hoặc hiện tại, "Đến ngày" tối đa là ngày hiện tại
+            return todayStr;
+        },
+    },
+};
 </script>
-<style>
-    
-</style>
+<style></style>

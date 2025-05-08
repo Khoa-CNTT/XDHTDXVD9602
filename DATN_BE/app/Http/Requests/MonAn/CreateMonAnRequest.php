@@ -20,7 +20,7 @@ class CreateMonAnRequest extends FormRequest
             'slug_mon'          =>  'required|min:5|unique:mon_ans,slug_mon',
             'hinh_anh'          =>  'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'gia_ban'           =>  'required|numeric|min:0|max:2000000000',
-            'tinh_trang'        =>  'required|boolean',
+            'tinh_trang'        =>  'required|in:0,1',
             'id_danh_muc'       =>  'required|exists:danh_mucs,id',
         ];
     }

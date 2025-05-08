@@ -102,7 +102,7 @@ class DanhMucSeeder extends Seeder
             ],
             [
                 'id'            => 11,
-                'icon'          => '',
+                'icon'          => '<i class="fa-solid fa-utensils fa-2x text-primary"></i>',
                 'ten_danh_muc' =>  'Hải Sản Hai Mảnh',
                 'slug_danh_muc' => 'hai-san-hai-manh',
                 'id_danh_muc_cha' => 3,

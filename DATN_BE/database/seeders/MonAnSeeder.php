@@ -93,7 +93,7 @@ class MonAnSeeder extends Seeder
             [
                 'ten_mon' => "Hàu Nướng Mỡ Hành",
                 'slug_mon' => "hau-nuong-mo-hanh",
-                'hinh_anh' => "https://buffetposeidon.com/storage/app/media/Nau-an/11.2022/181122-hau-nuong-mo-hanh-buffet-poseidon.jpg",
+                'hinh_anh' => "https://gatrongcooking.com/media/2021/12/hau-nuong-mo-hanh/hau-nuong-mo-hanh-16x9.webp",
                 'gia_ban' =>     170,
                 'tinh_trang' =>    1 ,
                 'id_danh_muc' =>    11 ,
@@ -125,7 +125,7 @@ class MonAnSeeder extends Seeder
             [
                 'ten_mon' => "Chíp Chíp Hấp",
                 'slug_mon' => "chip-chip-hap",
-                'hinh_anh' => "https://shipdoandemff.com/wp-content/uploads/2017/06/Chip-chip-h%E1%BA%A5p-s%E1%BA%A3-ShipdoandemFF.jpg",
+                'hinh_anh' => "https://legiaseafood.com/uploads/product/product-4o0gj3gkqtunvkb-569-chip-chip-hap-sa.jpg",
                 'gia_ban' =>     125,
                 'tinh_trang' =>    1 ,
                 'id_danh_muc' =>    11 ,

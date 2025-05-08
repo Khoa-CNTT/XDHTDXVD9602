@@ -19,11 +19,11 @@ class NhanVienSeeder extends Seeder
 
         DB::table('nhan_viens')->insert([
             ['id' => '1', 'ho_va_ten' => 'Admin', 'email' => 'admin@master.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '1', 'tinh_trang' => '1', 'is_master' => '1'],
-            ['id' => '2', 'ho_va_ten' => 'Nguyễn Ngọc', 'email' => 'nguyenngoc2110@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '3', 'tinh_trang' => '1', 'is_master' => '0'],
-            ['id' => '3', 'ho_va_ten' => 'Lê Ngọc Phúc', 'email' => 'lengocphuc@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '2', 'tinh_trang' => '1', 'is_master' => '0'],
-            ['id' => '4', 'ho_va_ten' => 'Nguyễn Hoàng Duy Nhất', 'email' => 'duynhat2471@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '5', 'tinh_trang' => '1', 'is_master' => '0'],
-            ['id' => '5', 'ho_va_ten' => 'Trương Quang Vinh', 'email' => 'vinhtruong@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '4', 'tinh_trang' => '1', 'is_master' => '0'],
-            ['id' => '6', 'ho_va_ten' => 'Nguyễn Thảo Sương', 'email' => 'thaosuong@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '3', 'tinh_trang' => '1', 'is_master' => '0'],
+            ['id' => '2', 'ho_va_ten' => 'Trần Công Trực', 'email' => 'trancongtruc7523@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '3', 'tinh_trang' => '1', 'is_master' => '0'],
+            ['id' => '3', 'ho_va_ten' => 'Võ Gia Khánh', 'email' => 'vogiakhanh0711@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '2', 'tinh_trang' => '1', 'is_master' => '0'],
+            ['id' => '4', 'ho_va_ten' => 'Trịnh Thanh Ngọc', 'email' => 'trinhthanhngoc0408@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '5', 'tinh_trang' => '1', 'is_master' => '0'],
+            ['id' => '5', 'ho_va_ten' => 'Nguyễn Minh Tú', 'email' => 'minhtu3403@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '4', 'tinh_trang' => '1', 'is_master' => '0'],
+            ['id' => '6', 'ho_va_ten' => 'Đỗ Xuân Anh', 'email' => 'anhdo2112003@gmail.com', 'password' => bcrypt('123456'), 'so_dien_thoai' => '123456789', 'dia_chi' => 'Đà Nẵng', 'id_chuc_vu' => '3', 'tinh_trang' => '1', 'is_master' => '0'],
         ]);
     }
 }

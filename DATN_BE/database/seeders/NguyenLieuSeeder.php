@@ -17,7 +17,7 @@ class NguyenLieuSeeder extends Seeder
         DB::table('nguyen_lieus')->truncate();
         DB::table('nguyen_lieus')->insert([
             [
-                'ten_nguyen_lieu' => 'Muốii ăn',
+                'ten_nguyen_lieu' => 'Muối ăn',
                 'slug_nguyen_lieu' => 'muoi-an',
                 'so_luong' => '10',
                 'gia' => '200',

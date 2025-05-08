@@ -1,40 +1,43 @@
 <template>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card border-top border-0 border-4 border-primary">
+        <div class="col-lg-4">
+            <div class="card">
                 <div class="card-header">
-                    <h5>Thêm Mới Danh Mục</h5>
+                    <h5 class="pt-3"><b>Thêm Mới Khu Vực</b></h5>
                 </div>
                 <div class="card-body">
-                    <label class="form-label">Icon</label>
-                    <input v-model="create_danh_muc.icon" type="text" class="form-control" placeholder="Nhập icon danh mục" />
-                    <label class="form-label mt-3">Tên Danh Mục</label>
-                    <input v-model="create_danh_muc.ten_danh_muc" v-on:keyup="addSlug()" v-on:change="kiemTraSlug()" type="text" class="form-control" placeholder="Nhập tên danh mục" />
-                    <label class="form-label mt-3">Slug Danh Mục</label>
-                    <input disabled v-model="create_danh_muc.slug_danh_muc" v-on:change="kiemTraSlug()" type="text" class="form-control" placeholder="Nhập slug danh mục" />
-                    <label class="form-label mt-3">Danh Mục Cha</label>
-                    <select v-model="create_danh_muc.id_danh_muc_cha" class="form-control">
-                        <option value="0">Root</option>
-                        <template v-for="(value, key) in list_danh_muc" :key="key">
-                            <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
-                        </template>
-                    </select>
-                    <label class="form-label mt-3">Tình Trạng</label>
-                    <select v-model="create_danh_muc.tinh_trang" class="form-select">
-                        <option value="0">Tạm Dừng</option>
-                        <option value="1">Hiển Thị</option>
-                    </select>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="">Tên Khu Vực</label>
+                            <input v-model="create_khu_vuc.ten_khu" v-on:change="kiemTraSlug()" v-on:keyup="addSlug()" type="text" class="form-control mt-2" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <label for="">Slug Khu Vực</label>
+                            <input v-model="create_khu_vuc.slug_khu" disabled type="text" class="form-control mt-2" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <label for="">Tình Trạng</label>
+                            <select v-model="create_khu_vuc.tinh_trang" name="" id="" class="form-select mt-2">
+                                <option value="1">Hiển Thị</option>
+                                <option value="0">Tạm Dừng</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer text-end">
-                    <button @:click="createDanhMuc()" v-if="is_create" class="btn btn-primary">Thêm mới</button>
-                    <button v-else class="btn btn-primary" disabled>Thêm mới</button>
+                    <button @:click="createKhuVuc()" class="btn btn-primary" v-if="is_create">Thêm Mới</button>
+                    <button class="btn btn-primary" v-else disabled>Thêm Mới</button>
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-lg-8">
             <div class="card border-top border-0 border-4 border-primary">
                 <div class="card-header">
-                    <h5>Danh Sách Danh Mục</h5>
+                    <h5 class="pt-3"><b>Danh Sách Khu Vực</b></h5>
                 </div>
                 <div class="card-body" style="max-height: 500px; overflow-y: auto">
                     <div class="table-responsive">
@@ -43,8 +46,8 @@
                                 <tr>
                                     <th colspan="100%">
                                         <div class="input-group mb-3">
-                                            <input v-on:keyup.enter="searchDanhMuc()" v-model="key_search.abc" type="text" class="form-control" placeholder="Nhập thông tin cần tìm" />
-                                            <button class="btn btn-primary" v-on:click="searchDanhMuc()">
+                                            <input v-on:keyup.enter="searchKhuVuc()" v-model="key_search.abc" type="text" class="form-control" placeholder="Nhập thông tin cần tìm" />
+                                            <button class="btn btn-primary" v-on:click="searchKhuVuc()">
                                                 <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
                                         </div>
@@ -52,83 +55,72 @@
                                 </tr>
                                 <tr>
                                     <th class="text-center align-middle text-nowrap">#</th>
-                                    <th class="text-center align-middle text-nowrap">Icon</th>
-                                    <th class="text-center align-middle text-nowrap">Tên Danh Mục</th>
-                                    <th class="text-center align-middle text-nowrap">Slug Danh Mục</th>
+                                    <th class="text-center align-middle text-nowrap">Tên Khu Vực</th>
+                                    <th class="text-center align-middle text-nowrap">Slug Khu Vực</th>
                                     <th class="text-center align-middle text-nowrap">Tình Trạng</th>
                                     <th class="text-center align-middle text-nowrap">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(v, k) in danh_mucs.data" :key="k">
+                                <tr v-for="(v, k) in khu_vucs.data" :key="k">
                                     <th class="text-center align-middle text-nowrap">
                                         {{ v.id }}
                                     </th>
-                                    <td class="align-middle text-nowrap text-center">
-                                        <span v-html="v.icon"></span>
+                                    <td class="align-middle text-nowrap">
+                                        {{ v.ten_khu }}
                                     </td>
                                     <td class="align-middle text-nowrap">
-                                        {{ v.ten_danh_muc }}
-                                    </td>
-                                    <td class="align-middle text-nowrap">
-                                        {{ v.slug_danh_muc }}
+                                        {{ v.slug_khu }}
                                     </td>
                                     <td class="text-center align-middle text-nowrap">
                                         <button @:click="doiTrangThai(v)" v-if="v.tinh_trang == 1" class="btn btn-success" style="width: 100px">Hiển Thị</button>
                                         <button @:click="doiTrangThai(v)" v-else class="btn btn-warning" style="width: 100px">Tạm Dừng</button>
                                     </td>
                                     <td class="text-center align-middle text-nowrap">
-                                        <button v-on:click="Object.assign(edit_danh_muc, v)" class="btn btn-info me-1" style="width: 100px" data-bs-toggle="modal" data-bs-target="#capNhatModal">
+                                        <button v-on:click="Object.assign(edit_khu_vuc, v)" class="btn btn-info me-2" style="width: 100px" data-bs-toggle="modal" data-bs-target="#capNhatModal">
                                             Cập Nhật
                                         </button>
-                                        <button class="btn btn-danger" style="width: 100px" data-bs-toggle="modal" data-bs-target="#xoaModal" v-on:click="Object.assign(delete_danh_muc, v)">
-                                            Xóa
-                                        </button>
+                                        <button class="btn btn-danger" style="width: 100px" data-bs-toggle="modal" data-bs-target="#xoaModal" v-on:click="Object.assign(delete_khu_vuc, v)">Xóa</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
                     <div class="modal fade" id="capNhatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Danh Mục</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Nguyên Liệu</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <label class="form-label">Icon</label>
-                                            <input v-model="edit_danh_muc.icon" type="text" class="form-control" placeholder="Nhập icon danh mục" />
+                                            <label for="">Tên Khu Vực</label>
+                                            <input v-model="edit_khu_vuc.ten_khu" v-on:keyup="addSlugUpdate()" v-on:change="kiemTraSlugUpdate()" type="text" class="form-control mt-2" />
                                         </div>
+                                    </div>
+                                    <div class="row mt-2">
                                         <div class="col-12">
-                                            <label class="form-label">Tên Danh Mục</label>
-                                            <input
-                                                v-model="edit_danh_muc.ten_danh_muc"
-                                                v-on:keyup="addSlugEdit()"
-                                                v-on:change="kiemTraSlugUpdate()"
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Nhập tên danh mục"
-                                            />
+                                            <label for="">Slug Khu Vực</label>
+                                            <input v-model="edit_khu_vuc.slug_khu" disabled type="text" class="form-control mt-2" />
                                         </div>
+                                    </div>
+                                    <div class="row mt-2">
                                         <div class="col-12">
-                                            <label class="form-label mt-3">Slug Danh Mục</label>
-                                            <input v-model="edit_danh_muc.slug_danh_muc" disabled type="text" class="form-control" placeholder="Nhập slug danh mục" />
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label mt-3">Tình Trạng</label>
-                                            <select v-model="edit_danh_muc.tinh_trang" class="form-select">
-                                                <option value="0">Tạm Dừng</option>
+                                            <label for="">Tình Trạng</label>
+                                            <select v-model="edit_khu_vuc.tinh_trang" class="form-select mt-2">
                                                 <option value="1">Hiển Thị</option>
+                                                <option value="0">Tạm Dừng</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button v-on:click="updateDanhMuc()" type="button" data-bs-dismiss="modal" class="btn btn-primary">Cập Nhật</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                                    <button v-if="is_update" data-bs-dismiss="modal" @:click="updateKhuVuc()" type="button" class="btn btn-primary">Cập Nhật</button>
+                                    <button type="button" v-else disabled class="btn btn-primary">Cập Nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +129,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Danh Mục</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Nguyên Liệu</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -148,8 +140,7 @@
                                                 <h6 class="mb-0 text-dark">Cảnh báo</h6>
                                                 <div class="text-dark">
                                                     <p>
-                                                        Bạn có muốn xóa danh mục <b>{{ delete_danh_muc.ten_danh_muc }}</b>
-                                                        này không?
+                                                        Bạn có muốn xóa sản phẩm <b> {{ delete_khu_vuc.ten_khu }}</b> này không?
                                                     </p>
                                                     <p><b>Lưu ý:</b> Điều này không thể hoàn tác!</p>
                                                 </div>
@@ -158,8 +149,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" v-on:click="deleteDanhMuc()">Xóa</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                                    <button type="button" class="btn btn-danger" v-on:click="deleteKhuVuc()" data-bs-dismiss="modal">Xóa</button>
                                 </div>
                             </div>
                         </div>
@@ -177,34 +168,34 @@
     </div>
 </template>
 <script>
-import baseRequest from "../../core/baseRequest";
 import axios from "axios";
 import { createToaster } from "@meforma/vue-toaster";
+import baseRequest from "../../core/baseRequest";
 const toaster = createToaster({ position: "top-right" });
 export default {
     data() {
         return {
-            list_danh_muc: [],
-            key_search: {},
-            create_danh_muc: {},
-            danh_mucs: {
+            khu_vucs: {
                 data: [],
                 current_page: 1,
                 last_page: 1,
             },
             pageSize: 5,
-            delete_danh_muc: {},
-            edit_danh_muc: {},
+            key_search: {},
+            create_khu_vuc: { tinh_trang: 1 },
+            delete_khu_vuc: {},
+            edit_khu_vuc: {},
             is_create: 0,
+            is_update: 0,
             isSearching: false,
         };
     },
     computed: {
         currentPage() {
-            return this.danh_mucs.current_page;
+            return this.khu_vucs.current_page;
         },
         totalPages() {
-            return this.danh_mucs.last_page;
+            return this.khu_vucs.last_page;
         },
         pageNumbers() {
             let pages = [];
@@ -257,8 +248,7 @@ export default {
         },
     },
     mounted() {
-        this.loadDataDanhMuc(1);
-        this.loadDataDanhMucAll();
+        this.loadDataKhuVuc();
     },
     methods: {
         convertToSlug(str) {
@@ -273,45 +263,34 @@ export default {
         },
 
         addSlug() {
-            this.create_danh_muc.slug_danh_muc = this.convertToSlug(this.create_danh_muc.ten_danh_muc);
-        },
-        addSlugEdit() {
-            this.edit_danh_muc.slug_danh_muc = this.convertToSlug(this.edit_danh_muc.ten_danh_muc);
+            this.create_khu_vuc.slug_khu = this.convertToSlug(this.create_khu_vuc.ten_khu);
         },
 
-        loadDataDanhMuc(page) {
-            baseRequest.get(`admin/danh-muc/lay-du-lieu?page=${page}&pageSize=${this.pageSize}`).then((res) => {
-                this.danh_mucs = res.data.danh_muc;
-            });
-        },
-
-        loadDataDanhMucAll() {
-            baseRequest.get(`admin/danh-muc/lay-du-lieu-all`).then((res) => {
-                this.list_danh_muc = res.data.danh_muc;
-            });
+        addSlugUpdate() {
+            this.edit_khu_vuc.slug_khu = this.convertToSlug(this.edit_khu_vuc.ten_khu);
         },
 
         kiemTraSlug() {
             var payload = {
-                slug: this.create_danh_muc.slug_danh_muc,
+                slug: this.create_khu_vuc.slug_khu,
             };
-            baseRequest.post("admin/danh-muc/kiem-tra-slug", payload).then((res) => {
+            baseRequest.post("admin/khu-vuc/kiem-tra-slug", payload).then((res) => {
                 if (res.data.status) {
                     toaster.success(res.data.message);
                     this.is_create = 1;
                 } else {
-                    this.is_create = 0;
                     toaster.error(res.data.message);
+                    this.is_create = 0;
                 }
             });
         },
 
         kiemTraSlugUpdate() {
             var payload = {
-                slug: this.edit_danh_muc.slug_danh_muc,
-                id: this.edit_danh_muc.id,
+                slug: this.edit_khu_vuc.slug_khu,
+                id: this.edit_khu_vuc.id,
             };
-            baseRequest.post("admin/danh-muc/kiem-tra-slug-update", payload).then((res) => {
+            baseRequest.post("admin/khu-vuc/kiem-tra-slug-update", payload).then((res) => {
                 if (res.data.status) {
                     toaster.success(res.data.message);
                     this.is_update = 1;
@@ -322,31 +301,37 @@ export default {
             });
         },
 
-        searchDanhMuc(page = 1) {
-            baseRequest.post(`admin/danh-muc/tim-danh-muc?page=${page}`, this.key_search).then((res) => {
-                this.danh_mucs = res.data.danh_muc;
-                this.danh_mucs.current_page = page;
+        loadDataKhuVuc(page) {
+            baseRequest.get(`admin/khu-vuc/lay-du-lieu?page=${page}&pageSize=${this.pageSize}`).then((res) => {
+                this.khu_vucs = res.data.khu_vuc;
+            });
+        },
+
+        searchKhuVuc(page = 1) {
+            baseRequest.post(`admin/khu-vuc/tim-khu-vuc?page=${page}`, this.key_search).then((res) => {
+                this.khu_vucs = res.data.khu_vuc;
+                this.khu_vucs.current_page = page;
                 this.isSearching = true;
             });
         },
         handlePageChange(page) {
             if (this.isSearching) {
-                this.searchDanhMuc(page);
+                this.searchKhuVuc(page);
             } else {
-                this.loadDataDanhMuc(page);
+                this.loadDataKhuVuc(page);
             }
         },
-        createDanhMuc() {
-            console.log(this.create_danh_muc);
+        createKhuVuc() {
+            console.log(this.create_khu_vuc);
             baseRequest
-                .post("admin/danh-muc/tao-danh-muc", this.create_danh_muc)
+                .post("admin/khu-vuc/tao-khu-vuc", this.create_khu_vuc)
                 .then((res) => {
                     if (res.data.status == true) {
-                        toaster.success("Thông báo<br>" + res.data.message);
-                        this.create_danh_muc = {};
-                        this.loadDataDanhMuc(this.danh_mucs.last_page);
+                        toaster.success(res.data.message);
+                        this.loadDataKhuVuc(this.khu_vucs.last_page);
+                        this.create_khu_vuc = { tinh_trang: 1 };
                     } else {
-                        toaster.error("Thông báo<br>" + res.data.message);
+                        toaster.error(res.data.message);
                     }
                 })
                 .catch((errors) => {
@@ -356,25 +341,27 @@ export default {
                     });
                 });
         },
-        deleteDanhMuc() {
-            baseRequest.delete("admin/danh-muc/xoa-danh-muc/" + this.delete_danh_muc.id).then((res) => {
+
+        deleteKhuVuc() {
+            baseRequest.delete("admin/khu-vuc/xoa-khu-vuc/" + this.delete_khu_vuc.id).then((res) => {
                 if (res.data.status == true) {
-                    toaster.success("Thông báo<br>" + res.data.message);
-                    this.handlePageChange(this.danh_mucs.current_page);
+                    toaster.success(res.data.message);
+                    this.handlePageChange(this.khu_vucs.current_page);
                 } else {
-                    toaster.error("Thông báo<br>" + res.data.message);
+                    toaster.error(res.data.message);
                 }
             });
         },
-        updateDanhMuc() {
+
+        updateKhuVuc() {
             baseRequest
-                .put("admin/danh-muc/cap-nhat-danh-muc", this.edit_danh_muc)
+                .put("admin/khu-vuc/cap-nhat-khu-vuc", this.edit_khu_vuc)
                 .then((res) => {
                     if (res.data.status == true) {
-                        toaster.success("Thông báo<br>" + res.data.message);
-                        this.handlePageChange(this.danh_mucs.current_page);
+                        toaster.success(res.data.message);
+                        this.handlePageChange(this.khu_vucs.current_page);
                     } else {
-                        toaster.error("Thông báo<br>" + res.data.message);
+                        toaster.error(res.data.message);
                     }
                 })
                 .catch((errors) => {
@@ -386,10 +373,10 @@ export default {
         },
 
         doiTrangThai(xyz) {
-            baseRequest.put("admin/danh-muc/doi-trang-thai", xyz).then((res) => {
+            baseRequest.put("admin/khu-vuc/doi-trang-thai", xyz).then((res) => {
                 if (res.data.status == true) {
                     toaster.success("Thông báo<br>" + res.data.message);
-                    this.handlePageChange(this.danh_mucs.current_page);
+                    this.handlePageChange(this.khu_vucs.current_page);
                 } else {
                     toaster.error(res.data.message);
                 }

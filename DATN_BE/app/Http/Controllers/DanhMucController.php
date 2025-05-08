@@ -295,4 +295,39 @@ class DanhMucController extends Controller
             ]);
         }
     }
+
+    public function kiemTraSlugDanhMucUpdate(Request $request)
+    {
+        $id_chuc_nang = 9;
+        $user = Auth::guard('sanctum')->user();
+
+        if ($user instanceof \App\Models\NhanVien) {
+            $user_chuc_vu   = $user->id_chuc_vu;
+            $check  = PhanQuyen::where('id_chuc_vu', $user_chuc_vu)
+                ->where('id_chuc_nang', $id_chuc_nang)
+                ->first();
+            if (!$check) {
+                return response()->json([
+                    'status'  =>  false,
+                    'message' =>  'Bạn không có quyền chức năng này'
+                ]);
+            }
+        }
+
+        $danh_muc= DanhMuc::where('slug_danh_muc', $request->slug)
+            ->where('id', '<>', $request->id)
+            ->first();
+
+        if (!$danh_muc) {
+            return response()->json([
+                'status'            =>   true,
+                'message'           =>   'Tên Danh Mục phù hợp!',
+            ]);
+        } else {
+            return response()->json([
+                'status'            =>   false,
+                'message'           =>   'Tên Danh Mục Đã Tồn Tại!',
+            ]);
+        }
+    }
 }

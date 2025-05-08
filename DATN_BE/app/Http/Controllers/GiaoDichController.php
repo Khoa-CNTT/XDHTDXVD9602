@@ -17,13 +17,13 @@ class GiaoDichController extends Controller
     {
         $client = new Client();
         $payload = [
-            "USERNAME"      => "NGUYENVUHUY211002",
-            "PASSWORD"      => "01694682134@aA",
+            "USERNAME"      => "TRANCONGTRUC7523",
+            "PASSWORD"      => "AZanhvipday123",
             "DAY_BEGIN"     => Carbon::today()->format('d/m/Y'),
             "DAY_END"       => Carbon::today()->format('d/m/Y'),
-            "NUMBER_MB"     => "5380148665533"
+            "NUMBER_MB"     => "2407202165"
         ];
-        
+
         // try {
             $response = $client->post('http://103.137.185.71:2603/mb', [
                 'json' => $payload
@@ -35,7 +35,7 @@ class GiaoDichController extends Controller
             //     'data'              =>   $data
             // ]);
             $duLieu = $data['data'];
-            
+
             foreach($duLieu as $key => $value) {
                 $giaoDich   = GiaoDich::where('pos', $value['pos'])
                                       ->where('creditAmount', $value['creditAmount'])
@@ -48,7 +48,7 @@ class GiaoDichController extends Controller
                             'description'       =>  $value['description'],
                             'pos'               =>  $value['pos'],
                     ]);
-                    
+
                     // Khi mà chúng ta tạo giao dịch => tìm giao dịch dựa vào description => đổi trạng thái của đơn hàng
                     $description = $value['description'];
                     // Tìm vị trí của chuỗi "HDBH"
@@ -80,15 +80,15 @@ class GiaoDichController extends Controller
                             ]);
                         }
 
-                        
+
 
                     }
                 }
 
-                
+
 
             }
-            
+
         // } catch (Exception $e) {
         //     echo $e;
         // }

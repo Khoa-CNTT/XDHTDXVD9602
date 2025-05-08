@@ -1,13 +1,9 @@
 <template>
-<footer class="page-footer">
-    <p class="mb-0">Copyright © 2021. All right reserved.</p>
-</footer>
+    <footer class="page-footer">
+        <p class="mb-0">Copyright © 2025. All right reserved.</p>
+    </footer>
 </template>
 <script>
-export default {
-    
-}
+export default {};
 </script>
-<style>
-    
-</style>
+<style></style>
