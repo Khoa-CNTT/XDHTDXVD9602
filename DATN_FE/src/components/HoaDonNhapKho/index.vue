@@ -13,7 +13,7 @@
                                 </td>
                                 <td class="align-middle">Đến Ngày</td>
                                 <td class="align-middle">
-                                    <input v-on:change="getDataHoaDonNhapKho()" type="date" class="form-control" v-model="tk.end" />
+                                    <input v-on:change="getDataHoaDonNhapKho()" type="date" class="form-control" v-model="tk.end" :max="maxEndDate" />
                                 </td>
                                 <td class="align-middle text-center">
                                     <button class="btn btn-primary" v-on:click="getDataHoaDonNhapKho()">Thống Kê</button>
@@ -190,6 +190,25 @@ export default {
             }
             return pages;
         },
+        maxEndDate() {
+            const today = new Date();
+            const todayStr = today.toISOString().slice(0, 10);
+
+            // Nếu chưa chọn "Từ ngày" thì "Đến ngày" tối đa là ngày hiện tại
+            if (!this.tk.begin) {
+                return todayStr;
+            }
+
+            const beginDate = new Date(this.tk.begin);
+
+            // Nếu "Từ ngày" là ngày tương lai, "Đến ngày" tối đa là "Từ ngày"
+            if (beginDate > today) {
+                return this.tk.begin;
+            }
+
+            // Nếu "Từ ngày" là quá khứ hoặc hiện tại, "Đến ngày" tối đa là ngày hiện tại
+            return todayStr;
+        },
     },
     mounted() {
         var date = new Date();
@@ -223,27 +242,6 @@ export default {
             baseRequest.post("admin/nhap-kho/data-chi-tiet-hoa-don-nhap-kho", v).then((res) => {
                 this.list_chi_tiet_hoa_don = res.data.data;
             });
-        },
-    },
-    computedDay: {
-        maxEndDate() {
-            const today = new Date();
-            const todayStr = today.toISOString().slice(0, 10);
-
-            // Nếu chưa chọn "Từ ngày" thì "Đến ngày" tối đa là ngày hiện tại
-            if (!this.tk.begin) {
-                return todayStr;
-            }
-
-            const beginDate = new Date(this.tk.begin);
-
-            // Nếu "Từ ngày" là ngày tương lai, "Đến ngày" tối đa là "Từ ngày"
-            if (beginDate > today) {
-                return this.tk.begin;
-            }
-
-            // Nếu "Từ ngày" là quá khứ hoặc hiện tại, "Đến ngày" tối đa là ngày hiện tại
-            return todayStr;
         },
     },
 };
