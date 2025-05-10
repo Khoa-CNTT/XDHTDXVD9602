@@ -91,7 +91,7 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Nguyên Liệu</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật Khu vực</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -119,8 +119,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-                                    <button v-if="is_update" data-bs-dismiss="modal" @:click="updateKhuVuc()" type="button" class="btn btn-primary">Cập Nhật</button>
-                                    <button type="button" v-else disabled class="btn btn-primary">Cập Nhật</button>
+                                    <button v-on:click="updateKhuVuc()" type="button" data-bs-dismiss="modal" class="btn btn-primary">Cập Nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +128,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Nguyên Liệu</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Khu Vực</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
