@@ -22,7 +22,7 @@
                             <tbody>
                                 <tr v-for="(v, k) in beps" :key="k">
                                     <th class="align-middle text-center">
-                                        <img v-bind:src="v.hinh_anh" style="width: 100px; height: auto;" alt="">
+                                        <img v-bind:src="v.hinh_anh" style="width: 100px; height: auto" alt="" />
                                     </th>
                                     <td class="align-middle">
                                         {{ v.ten_mon }}
@@ -40,8 +40,7 @@
                                         {{ date_format(v.updated_at) }}
                                     </td>
                                     <td class="align-middle text-center text-nowrap">
-                                        <button @click="updateBep(v)" style="margin-right: 4px;" class="btn btn-primary"
-                                            data-bs-toggle="modal" data-bs-target="#capNhatModal">Xong</button>
+                                        <button @click="updateBep(v)" style="margin-right: 4px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#capNhatModal">Xong</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -53,52 +52,59 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
-import baseRequest from '../../core/baseRequest';
+import axios from "axios";
+import baseRequest from "../../core/baseRequest";
 import { createToaster } from "@meforma/vue-toaster";
 const toaster = createToaster({ position: "top-right" });
 export default {
     data() {
         return {
             beps: [],
-        }
+            interval: null, // Thêm biến để lưu interval
+        };
     },
     mounted() {
         this.loadDataBep();
+        // Thiết lập interval để gọi loadDataBep mỗi 2 giây
+        this.interval = setInterval(() => {
+            this.loadDataBep();
+        }, 2000);
+    },
+    beforeUnmount() {
+        // Clear interval khi component bị hủy để tránh rò rỉ bộ nhớ
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
     },
     methods: {
         loadDataBep() {
-            baseRequest
-                .get(`admin/dich-vu/bep/lay-du-lieu`)
-                .then((res) => {
-                    this.beps = res.data.data;
-                });
+            baseRequest.get(`admin/dich-vu/bep/lay-du-lieu`).then((res) => {
+                this.beps = res.data.data;
+            });
         },
         updateBep(v) {
-            baseRequest
-                .post('admin/dich-vu/bep/update', v)
-                .then((res) => {
-                    if (res.data.status) {
-                        toaster.success(res.data.message);
-                        this.loadDataBep();
-                    } else {
-                        toaster.error(res.data.message);
-                    }
-                })
+            baseRequest.post("admin/dich-vu/bep/update", v).then((res) => {
+                if (res.data.status) {
+                    toaster.success(res.data.message);
+                    this.loadDataBep();
+                } else {
+                    toaster.error(res.data.message);
+                }
+            });
         },
         date_format(now) {
             const date = new Date(now);
-            return new Intl.DateTimeFormat('vi-Vi', {
-                year: 'numeric',
-                month: 'long',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
+            return new Intl.DateTimeFormat("vi-Vi", {
+                year: "numeric",
+                month: "long",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
             }).format(date);
         },
-    }
-}
+    },
+};
 </script>
 <style></style>
