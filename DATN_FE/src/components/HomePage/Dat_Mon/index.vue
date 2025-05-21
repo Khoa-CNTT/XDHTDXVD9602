@@ -160,11 +160,29 @@ export default {
     mounted() {
         this.loadDataDatMon();
         this.tong_tien;
+
+        // Thiết lập interval để tự động reload dữ liệu mỗi 2 giây
+        this.refreshInterval = setInterval(() => {
+            this.autoRefreshData();
+        }, 2000);
     },
-    beforeRouteUpdate(to, from, next) {
-        this.loadDataDatMon();
+    beforeUnmount() {
+        // Clear interval khi component bị hủy
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+        }
     },
     methods: {
+        autoRefreshData() {
+            // Nếu đang mở modal chi tiết hóa đơn thì refresh dữ liệu chi tiết
+            if (this.ban.hoa_don_hien_tai && document.getElementById('exampleModal').classList.contains('show')) {
+                this.getChiTietHoaDon(this.ban.hoa_don_hien_tai);
+            }
+            // Luôn refresh dữ liệu chính
+            this.loadDataDatMon();
+        },
+        
+        // Các methods khác giữ nguyên
         formatToVND(number) {
             number = parseInt(number);
             return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -182,7 +200,6 @@ export default {
                         toaster.error('Thông báo<br>' + res.data.message);
                         this.$router.push('/');
                     }
-
                 });
         },
         loadMonAn(v) {
