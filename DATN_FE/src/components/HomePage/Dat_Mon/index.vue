@@ -47,7 +47,6 @@
                                 </template>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -101,23 +100,27 @@
                                                 {{ v.so_luong }}
                                             </template>
                                             <template v-else>
-                                                <input v-on:change="updateChiTiet(v)" type="number" min="1"
-                                                    v-model="v.so_luong" class="form-control text-center"
-                                                    style="width: 100px;">
+                                                <input type="number" min="1"
+                                                    v-model="v.so_luong"
+                                                    class="form-control text-center"
+                                                    style="width: 100px;"
+                                                    @focus="pauseAutoRefreshAndSave(v)"
+                                                    @blur="handleQuantityChange(v)">
                                             </template>
                                         </td>
                                         <td class="align-middle">
                                             {{ formatToVND(v.don_gia) }}
                                         </td>
-                                        <td v-on:change="updateChiTiet(v)" class="align-middle">{{
-                                            formatToVND(v.thanh_tien) }}
-                                        </td>
-                                        <td v-on:change="updateChiTiet(v)" class="align-middle">
+                                        <td class="align-middle">{{ formatToVND(v.thanh_tien) }}</td>
+                                        <td class="align-middle">
                                             <template v-if="v.is_in_bep">
                                                 {{ v.ghi_chu }}
                                             </template>
                                             <template v-else>
-                                                <input type="text" class="form-control" v-model="v.ghi_chu">
+                                                <input type="text" class="form-control" 
+                                                    v-model="v.ghi_chu"
+                                                    @focus="pauseAutoRefreshAndSave(v)"
+                                                    @blur="resumeAutoRefreshAndUpdate(v)">
                                             </template>
                                         </td>
                                     </tr>
@@ -131,19 +134,20 @@
                     <p class="text-center"><h6>Tổng tiền thanh toán: </h6>{{ formatToVND(this.tong_tien_thu) }}</p>
                     <p>
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                        <button @click="inBep()" type="button" class="btn btn-primary">Đặt Món</button>
+                        <button @click="inBep()" type="button" class="btn btn-primary" :disabled="disableOrderButton">Đặt Món</button>
                     </p>
-
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 import baseRequest from '../../../core/baseRequest';
 import { createToaster } from "@meforma/vue-toaster";
 const toaster = createToaster({ position: "top-right" });
+
 export default {
     props: ['slug_ban', 'hash_ban'],
     data() {
@@ -155,38 +159,104 @@ export default {
             tong_tien: 0,
             tong_tien_thu: 0,
             count: 0,
+            refreshInterval: null,
+            disableOrderButton: false,
+            hasOrderedInThisSession: false,
+            currentEditingItem: null,
+            isEditingNote: false
         }
     },
     mounted() {
         this.loadDataDatMon();
-        this.tong_tien;
-
-        // Thiết lập interval để tự động reload dữ liệu mỗi 2 giây
-        this.refreshInterval = setInterval(() => {
-            this.autoRefreshData();
-        }, 2000);
+        this.setupAutoRefresh();
+        
+        const modal = document.getElementById('exampleModal');
+        modal.addEventListener('show.bs.modal', () => {
+            this.hasOrderedInThisSession = false;
+            this.updateButtonState();
+        });
     },
     beforeUnmount() {
-        // Clear interval khi component bị hủy
-        if (this.refreshInterval) {
-            clearInterval(this.refreshInterval);
-        }
+        this.clearAutoRefresh();
     },
     methods: {
+        pauseAutoRefreshAndSave(item) {
+            this.pauseAutoRefresh();
+            this.currentEditingItem = {...item};
+            this.isEditingNote = true;
+        },
+        
+        handleQuantityChange(item) {
+            if (item.so_luong < 1) {
+                item.so_luong = 1;
+                toaster.warning('Số lượng tối thiểu là 1');
+            }
+            
+            if (this.currentEditingItem && 
+                (this.currentEditingItem.so_luong !== item.so_luong || 
+                 this.currentEditingItem.ghi_chu !== item.ghi_chu)) {
+                this.updateChiTiet(item);
+            }
+            
+            this.resumeAutoRefresh();
+            this.currentEditingItem = null;
+            this.isEditingNote = false;
+        },
+        
+        resumeAutoRefreshAndUpdate(item) {
+            if (this.currentEditingItem && this.currentEditingItem.ghi_chu !== item.ghi_chu) {
+                this.updateChiTiet(item);
+            }
+            this.resumeAutoRefresh();
+            this.currentEditingItem = null;
+            this.isEditingNote = false;
+        },
+        
+        setupAutoRefresh() {
+            this.clearAutoRefresh();
+            if (!this.isEditingNote) {
+                this.refreshInterval = setInterval(() => {
+                    this.autoRefreshData();
+                }, 3000);
+            }
+        },
+        
+        clearAutoRefresh() {
+            if (this.refreshInterval) {
+                clearInterval(this.refreshInterval);
+                this.refreshInterval = null;
+            }
+        },
+        
+        pauseAutoRefresh() {
+            this.isEditingNote = true;
+            this.clearAutoRefresh();
+        },
+        
+        resumeAutoRefresh() {
+            this.isEditingNote = false;
+            this.setupAutoRefresh();
+            this.autoRefreshData();
+        },
+        
         autoRefreshData() {
-            // Nếu đang mở modal chi tiết hóa đơn thì refresh dữ liệu chi tiết
             if (this.ban.hoa_don_hien_tai && document.getElementById('exampleModal').classList.contains('show')) {
                 this.getChiTietHoaDon(this.ban.hoa_don_hien_tai);
             }
-            // Luôn refresh dữ liệu chính
             this.loadDataDatMon();
         },
         
-        // Các methods khác giữ nguyên
+        updateButtonState() {
+            this.disableOrderButton = this.hasOrderedInThisSession || 
+                                    this.list_chi_tiet_ban_hang.length === 0 ||
+                                    this.list_chi_tiet_ban_hang.every(item => item.is_in_bep);
+        },
+        
         formatToVND(number) {
             number = parseInt(number);
             return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
+        
         loadDataDatMon() {
             baseRequest
                 .get(`dat-mon-homepage/` + this.slug_ban + '/' + this.hash_ban)
@@ -202,6 +272,7 @@ export default {
                     }
                 });
         },
+        
         loadMonAn(v) {
             baseRequest
                 .post(`mon-an-homepage`, v)
@@ -209,6 +280,7 @@ export default {
                     this.mon_an = res.data.mon_an;
                 });
         },
+        
         getChiTietHoaDon(v) {
             var payload = {
                 'ma_hoa_don': v,
@@ -221,14 +293,14 @@ export default {
                         this.tong_tien = res.data.tong_tien;
                         this.tong_tien_thu = res.data.tong_tien_thu;
                         this.count = res.data.count;
-                        // console.log(res.data);
-                    }else {
+                        this.updateButtonState();
+                    } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                         this.$router.push('/');
                     }
-                    
                 });
         },
+        
         themMonAn(v) {
             var payload = {
                 'ma_hoa_don': this.ban.hoa_don_hien_tai,
@@ -239,10 +311,9 @@ export default {
                 .post('create-chi-tiet-hoa-don-homepage', payload)
                 .then((res) => {
                     if (res.data.status) {
-                        // toaster.success(res.data.message);
                         this.tong_tien = res.data.tong_tien;
                         this.getChiTietHoaDon(this.ban.hoa_don_hien_tai);
-                    }else {
+                    } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                         this.$router.push('/');
                     }
@@ -254,6 +325,7 @@ export default {
                     })
                 });
         },
+        
         updateChiTiet(v) {
             baseRequest
                 .post('update-chi-tiet-hoa-don-homepage', v)
@@ -262,7 +334,7 @@ export default {
                         toaster.success(res.data.message);
                         this.tong_tien = res.data.tong_tien;
                         this.getChiTietHoaDon(this.ban.hoa_don_hien_tai);
-                    }else {
+                    } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                         this.$router.push('/');
                     }
@@ -275,21 +347,32 @@ export default {
                     })
                 });
         },
+        
         xoaChiTiet(v) {
             baseRequest
                 .post('delete-chi-tiet-hoa-don-homepage', v)
                 .then((res) => {
                     if (res.data.status) {
-                        // toaster.success(res.data.message);
                         this.tong_tien = res.data.tong_tien;
                         this.getChiTietHoaDon(this.ban.hoa_don_hien_tai);
-                    }else {
+                    } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                         this.$router.push('/');
                     }
                 });
         },
+        
         inBep() {
+            if (this.currentEditingItem) {
+                const item = this.list_chi_tiet_ban_hang.find(i => i.id === this.currentEditingItem.id);
+                if (item && (this.currentEditingItem.so_luong !== item.so_luong || 
+                             this.currentEditingItem.ghi_chu !== item.ghi_chu)) {
+                    this.updateChiTiet(item);
+                }
+            }
+            
+            if (this.disableOrderButton) return;
+            
             var payload = {
                 'ma_hoa_don': this.ban.hoa_don_hien_tai
             };
@@ -298,6 +381,8 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         toaster.success(res.data.message);
+                        this.hasOrderedInThisSession = true;
+                        this.updateButtonState();
                     } else {
                         toaster.error(res.data.message);
                         this.$router.push('/');
@@ -308,12 +393,13 @@ export default {
                     const listErrors = errors.response.data.errors;
                     Object.values(listErrors).forEach((value) => {
                         toaster.error('Thông báo<br>' + value);
-                    })
+                    });
                 });
-        },
+        }
     }
 }
 </script>
+
 <style>
 .cart {
     position: fixed;
