@@ -20,7 +20,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Muối ăn',
                 'slug_nguyen_lieu' => 'muoi-an',
                 'so_luong' => '10',
-                'gia' => '200',
+                'gia' => '20000',
                 'dvt' => 'kg',
                 'tinh_trang' => '1'
             ],
@@ -28,7 +28,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Bột Ngọt',
                 'slug_nguyen_lieu' => 'bot-ngot',
                 'so_luong' => '10',
-                'gia' => '150',
+                'gia' => '15000',
                 'dvt' => 'kg',
                 'tinh_trang' => '1'
             ],
@@ -36,7 +36,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Dầu Ăn',
                 'slug_nguyen_lieu' => 'dau-an',
                 'so_luong' => '20',
-                'gia' => '2000',
+                'gia' => '20000',
                 'dvt' => 'lit',
                 'tinh_trang' => '1'
             ],
@@ -44,7 +44,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Hạt Nêm',
                 'slug_nguyen_lieu' => 'hat-nem',
                 'so_luong' => '20',
-                'gia' => '120',
+                'gia' => '12000',
                 'dvt' => 'kg',
                 'tinh_trang' => '1'
             ],
@@ -52,7 +52,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Ớt',
                 'slug_nguyen_lieu' => 'ot',
                 'so_luong' => '20',
-                'gia' => '200',
+                'gia' => '2000',
                 'dvt' => 'kg',
                 'tinh_trang' => '1'
             ],
@@ -60,7 +60,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Sting',
                 'slug_nguyen_lieu' => 'sting',
                 'so_luong' => '10',
-                'gia' => '2000',
+                'gia' => '20000',
                 'dvt' => 'thung',
                 'tinh_trang' => '1'
             ],
@@ -68,7 +68,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Bia Sai Gon',
                 'slug_nguyen_lieu' => 'bia-sai-gon',
                 'so_luong' => '50',
-                'gia' => '4500',
+                'gia' => '45000',
                 'dvt' => 'thung',
                 'tinh_trang' => '1'
             ],
@@ -76,7 +76,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Bia Tiger',
                 'slug_nguyen_lieu' => 'bia-tiger',
                 'so_luong' => '50',
-                'gia' => '5000',
+                'gia' => '50000',
                 'dvt' => 'thung',
                 'tinh_trang' => '1'
             ],
@@ -84,7 +84,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Bia Huda',
                 'slug_nguyen_lieu' => 'bia-huda',
                 'so_luong' => '50',
-                'gia' => '4000',
+                'gia' => '40000',
                 'dvt' => 'thung',
                 'tinh_trang' => '1'
             ],
@@ -92,7 +92,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Pessi',
                 'slug_nguyen_lieu' => 'pessi',
                 'so_luong' => '20',
-                'gia' => '3000',
+                'gia' => '30000',
                 'dvt' => 'thung',
                 'tinh_trang' => '1'
             ],
@@ -100,7 +100,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => '7 Up',
                 'slug_nguyen_lieu' => '7-up',
                 'so_luong' => '30',
-                'gia' => '3000',
+                'gia' => '30000',
                 'dvt' => 'thung',
                 'tinh_trang' => '1'
             ],
@@ -108,14 +108,14 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Giấy Ăn',
                 'slug_nguyen_lieu' => 'giay-an',
                 'so_luong' => '100',
-                'gia' => '100',
+                'gia' => '1000',
                 'dvt' => 'cuộn',
                 'tinh_trang' => '1'
             ],
             [
                 'ten_nguyen_lieu' => 'Đũa',
                 'slug_nguyen_lieu' => 'dua',
-                'so_luong' => '200',
+                'so_luong' => '2000',
                 'gia' => '120',
                 'dvt' => 'chiec',
                 'tinh_trang' => '1'
@@ -124,14 +124,14 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Muỗng',
                 'slug_nguyen_lieu' => 'muong',
                 'so_luong' => '100',
-                'gia' => '200',
+                'gia' => '2000',
                 'dvt' => 'chiec',
                 'tinh_trang' => '1'
             ],
             [
                 'ten_nguyen_lieu' => 'Vá',
                 'slug_nguyen_lieu' => 'va',
-                'so_luong' => '50',
+                'so_luong' => '5000',
                 'gia' => '300',
                 'dvt' => 'chiec',
                 'tinh_trang' => '1'
@@ -139,7 +139,7 @@ class NguyenLieuSeeder extends Seeder
             [
                 'ten_nguyen_lieu' => 'Màng Bọc Thực Phẩm',
                 'slug_nguyen_lieu' => 'mang-boc-thuc-pham',
-                'so_luong' => '100',
+                'so_luong' => '1000',
                 'gia' => '3000',
                 'dvt' => 'cuộn',
                 'tinh_trang' => '1'
@@ -147,7 +147,7 @@ class NguyenLieuSeeder extends Seeder
             [
                 'ten_nguyen_lieu' => 'Chảo',
                 'slug_nguyen_lieu' => 'chao',
-                'so_luong' => '20',
+                'so_luong' => '200000',
                 'gia' => '1000',
                 'dvt' => 'chiếc',
                 'tinh_trang' => '1'
@@ -156,7 +156,7 @@ class NguyenLieuSeeder extends Seeder
                 'ten_nguyen_lieu' => 'Nước Rửa Chén',
                 'slug_nguyen_lieu' => 'nuoc-rua-chen',
                 'so_luong' => '100',
-                'gia' => '6000',
+                'gia' => '20000',
                 'dvt' => 'lit',
                 'tinh_trang' => '1'
             ],
